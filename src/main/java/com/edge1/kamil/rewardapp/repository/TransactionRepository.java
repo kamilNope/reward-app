@@ -1,8 +1,8 @@
 package com.edge1.kamil.rewardapp.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
-import com.edge1.kamil.rewardapp.entity.Transaction;
+import com.edge1.kamil.rewardapp.model.Transaction;
 
-public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+public interface TransactionRepository extends CrudRepository<Transaction, Long> {
 }

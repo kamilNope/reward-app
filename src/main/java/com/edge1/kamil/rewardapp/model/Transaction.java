@@ -1,14 +1,13 @@
-package com.edge1.kamil.rewardapp.entity;
+package com.edge1.kamil.rewardapp.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +27,9 @@ class Transaction {
 
     @Column(name = "PRICE", nullable = false)
     private Double price;
+
+    @Column(name = "DATE")
+    private Date date;
 
     @ManyToOne
     @JoinColumn(name = "ID_C")

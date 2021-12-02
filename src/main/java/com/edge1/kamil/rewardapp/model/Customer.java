@@ -1,4 +1,4 @@
-package com.edge1.kamil.rewardapp.entity;
+package com.edge1.kamil.rewardapp.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
