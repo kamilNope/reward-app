@@ -1,7 +1,5 @@
 package com.edge1.kamil.rewardapp.service;
 
-import java.util.Objects;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,9 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class CustomerPointsRecord {
+public final class CustomerPointsRecord {
 
-    Double totalUserScore;
-    Double monthUserScore;
+    Integer totalUserScore;
+    Integer monthUserScore;
     String userID;
 }

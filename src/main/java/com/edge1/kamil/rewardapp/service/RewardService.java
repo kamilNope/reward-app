@@ -1,6 +1,11 @@
 package com.edge1.kamil.rewardapp.service;
 
+import java.util.List;
+import java.util.function.BinaryOperator;
+
 import org.springframework.stereotype.Service;
+
+import com.edge1.kamil.rewardapp.model.Transaction;
 
 @Service
 public class RewardService {
@@ -9,11 +14,21 @@ public class RewardService {
     Double transactionSum;
     CustomerPointsRecord customerPointsRecord = new CustomerPointsRecord();
 
-    public int sumRewardPoints(Double price) {
-        if (price > DOUBLE_POINTS_THRESHOLD) {
-            return (int) (((price - DOUBLE_POINTS_THRESHOLD) * 2) + SINGLE_POINTS_THRESHOLD);
-        } else if (price > SINGLE_POINTS_THRESHOLD) {
-            return (int) (price - SINGLE_POINTS_THRESHOLD);
+    public int sumRewardPoints(List<Transaction> transactions) {
+        return countPointsFromSpentMoney(getSumOfTransactions(transactions));
+    }
+
+    private Double getSumOfTransactions(List<Transaction> transactions) {
+        return transactions.stream()
+                .map(Transaction::getPrice)
+                .reduce(0d, Double::sum);
+    }
+
+    private int countPointsFromSpentMoney(Double transactionsSum) {
+        if (transactionsSum > DOUBLE_POINTS_THRESHOLD) {
+            return (int) (((transactionsSum - DOUBLE_POINTS_THRESHOLD) * 2) + SINGLE_POINTS_THRESHOLD);
+        } else if (transactionsSum > SINGLE_POINTS_THRESHOLD) {
+            return (int) (transactionsSum - SINGLE_POINTS_THRESHOLD);
         }
         return 0;
     }

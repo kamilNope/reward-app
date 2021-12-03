@@ -24,6 +24,7 @@ class RewardController {
     private final CustomerRepository customerRepository;
     private final TransactionRepository transactionRepository;
     private final TransactionService transactionService;
+    private CustomerPointsRecord customerPointsRecord = new CustomerPointsRecord();
 
     RewardController(RewardService rewardService,
             CustomerRepository customerRepository,
@@ -35,22 +36,22 @@ class RewardController {
         this.transactionRepository = transactionRepository;
     }
 
-    @GetMapping ("/{customerId}")
+    @GetMapping ("/{customerId}/monthScore")
     ResponseEntity<CustomerPointsRecord> getCustomerMonthScore(@PathVariable Long customerId){
-        List<Transaction> transactionsOfCustomer = transactionRepository.findByCustomerId(List.of(customerId));
-        List<Transaction> transactionsFromMonth = transactionService.selectTransactionsFromPreviousMonth(transactionsOfCustomer);
+        List<Transaction> transactionsOfCustomer = transactionRepository.findByCustomerId(customerId);
         if(!transactionsOfCustomer.isEmpty()){
-            rewardService.sumRewardPoints(0.0);
-            return new ResponseEntity<>(new CustomerPointsRecord(), HttpStatus.OK);
+            List<Transaction> transactionsFromMonth = transactionService.selectTransactionsFromPreviousMonth(transactionsOfCustomer);
+            customerPointsRecord.setMonthUserScore(rewardService.sumRewardPoints(transactionsFromMonth));
+            return new ResponseEntity<>(customerPointsRecord, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
     }
 
-    @GetMapping ("/{userId}")
-    CustomerPointsRecord getUserTotalScore(@PathVariable String userId){
-        rewardService.sumRewardPoints(0.0);
+    @GetMapping ("/{customerId}/totalScore")
+    CustomerPointsRecord getCustomerTotalScore(@PathVariable Long customerId){
+        List<Transaction> transactionsOfCustomer = transactionRepository.findByCustomerId(customerId);
+        rewardService.sumRewardPoints(transactionsOfCustomer);
         return new CustomerPointsRecord();
     }
 

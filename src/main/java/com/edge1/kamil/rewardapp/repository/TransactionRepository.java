@@ -7,5 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 import com.edge1.kamil.rewardapp.model.Transaction;
 
 public interface TransactionRepository extends CrudRepository<Transaction, Long> {
-    List<Transaction> findByCustomerId(List<Long> customerId);
+    List<Transaction> findByCustomerId(Long customerId);
 }
