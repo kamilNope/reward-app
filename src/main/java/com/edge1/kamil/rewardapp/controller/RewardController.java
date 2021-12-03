@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.edge1.kamil.rewardapp.model.Transaction;
 import com.edge1.kamil.rewardapp.repository.CustomerRepository;
 import com.edge1.kamil.rewardapp.repository.TransactionRepository;
-import com.edge1.kamil.rewardapp.service.CustomerPointsRecord;
+import com.edge1.kamil.rewardapp.view.CustomerPointsDTO;
 import com.edge1.kamil.rewardapp.service.RewardService;
 import com.edge1.kamil.rewardapp.service.TransactionService;
 
 @RestController
-@RequestMapping("api/reward-program")
+@RequestMapping("/api/reward-program")
 class RewardController {
 
     private final RewardService rewardService;
@@ -36,7 +36,7 @@ class RewardController {
     }
 
     @GetMapping("/{customerId}/month-score")
-    ResponseEntity<CustomerPointsRecord> getCustomerMonthScore(@PathVariable Long customerId) {
+    ResponseEntity<CustomerPointsDTO> getCustomerMonthScore(@PathVariable Long customerId) {
         List<Transaction> transactionsOfCustomer = transactionRepository.findByCustomerId(customerId);
         if (!transactionsOfCustomer.isEmpty()) {
             List<Transaction> transactionsFromMonth = transactionService.selectTransactionsFromPrevMonth(
@@ -44,19 +44,19 @@ class RewardController {
 
             String customer = customerRepository.findById(customerId).get().getName();
             final int monthUserScore = rewardService.sumRewardPoints(transactionsFromMonth);
-            return new ResponseEntity<>(new CustomerPointsRecord(customer, monthUserScore), HttpStatus.OK);
+            return new ResponseEntity<>(new CustomerPointsDTO(customer, monthUserScore), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/{customerId}/total-score")
-    ResponseEntity<CustomerPointsRecord> getCustomerTotalScore(@PathVariable Long customerId) {
+    ResponseEntity<CustomerPointsDTO> getCustomerTotalScore(@PathVariable Long customerId) {
         List<Transaction> transactionsOfCustomer = transactionRepository.findByCustomerId(customerId);
         if (!transactionsOfCustomer.isEmpty()) {
             final int totalPoints = rewardService.sumRewardPoints(transactionsOfCustomer);
             String customer = customerRepository.findById(customerId).get().getName();
-            return new ResponseEntity<>(new CustomerPointsRecord(customer, totalPoints), HttpStatus.OK);
+            return new ResponseEntity<>(new CustomerPointsDTO(customer, totalPoints), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

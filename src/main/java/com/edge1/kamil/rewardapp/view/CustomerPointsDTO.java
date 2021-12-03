@@ -1,4 +1,4 @@
-package com.edge1.kamil.rewardapp.service;
+package com.edge1.kamil.rewardapp.view;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class CustomerPointsRecord {
+public final class CustomerPointsDTO {
     String customerName;
     Integer customerScore;
 }

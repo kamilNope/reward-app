@@ -6,59 +6,45 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.edge1.kamil.rewardapp.model.Customer;
-import com.edge1.kamil.rewardapp.model.Transaction;
 import com.edge1.kamil.rewardapp.repository.CustomerRepository;
 import com.edge1.kamil.rewardapp.repository.TransactionRepository;
-import com.edge1.kamil.rewardapp.view.CustomerPointsDTO;
-import com.edge1.kamil.rewardapp.service.RewardService;
-import com.edge1.kamil.rewardapp.service.TransactionService;
+import com.edge1.kamil.rewardapp.view.TransactionDTO;
 
 @ExtendWith(MockitoExtension.class)
-class RewardControllerTest {
+class TransactionControllerTest {
 
-    @Spy
-    RewardService rewardService;
-    @Spy
-    TransactionService transactionService;
     @Mock
     TransactionRepository transactionRepository;
     @Mock
     CustomerRepository customerRepository;
 
     @InjectMocks
-    RewardController rewardController;
+    TransactionController transactionController;
 
     @Test
-    void shouldReturnMonthReward() {
+    void shouldAddTransaction() {
         // given
+        TransactionDTO transactionDTO = new TransactionDTO(100L, 1000d, 1L);
         final Customer ted = new Customer(1L, "TED");
-        final List<Transaction> tedTran = List.of(
-                new Transaction(1L, 99.0, Date.valueOf(LocalDate.now()), ted));
         when(customerRepository.findById(1L)).thenReturn(Optional.of(ted));
-        when(transactionRepository.findByCustomerId(any())).thenReturn(tedTran);
         // when
-        final ResponseEntity<CustomerPointsDTO> customerMonthScore = rewardController.getCustomerMonthScore(1L);
+        final ResponseEntity<TransactionDTO> transactionOfCustomer = transactionController.addNewTransactionOfCustomer(
+                transactionDTO);
         // then
-        verify(rewardService, times(1)).sumRewardPoints(tedTran);
-        verify(transactionService, times(1)).selectTransactionsFromPrevMonth(tedTran);
         verify(customerRepository, times(1)).findById(1L);
-        assertEquals(HttpStatus.OK, customerMonthScore.getStatusCode());
-        assertEquals(49, customerMonthScore.getBody().getCustomerScore());
+        verify(transactionRepository, times(1)).save(any());
+        assertEquals(HttpStatus.OK, transactionOfCustomer.getStatusCode());
+        assertEquals(transactionDTO, transactionOfCustomer.getBody());
     }
-
 }
