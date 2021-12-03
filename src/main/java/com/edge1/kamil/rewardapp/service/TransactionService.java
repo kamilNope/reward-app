@@ -11,7 +11,7 @@ import com.edge1.kamil.rewardapp.model.Transaction;
 @Service
 public class TransactionService {
 
-    public List<Transaction> selectTransactionsFromPreviousMonth(List<Transaction> transactions){
+    public List<Transaction> selectTransactionsFromPrevMonth(List<Transaction> transactions){
         LocalDate previousMontDate = LocalDate.now().minusMonths(1L);
         return transactions.stream()
                 .filter(transaction -> previousMontDate.isBefore(transaction.getDate().toLocalDate()))

@@ -1,7 +1,6 @@
 package com.edge1.kamil.rewardapp.service;
 
 import java.util.List;
-import java.util.function.BinaryOperator;
 
 import org.springframework.stereotype.Service;
 
@@ -11,8 +10,6 @@ import com.edge1.kamil.rewardapp.model.Transaction;
 public class RewardService {
     private static final int DOUBLE_POINTS_THRESHOLD = 100;
     private static final int SINGLE_POINTS_THRESHOLD = 50;
-    Double transactionSum;
-    CustomerPointsRecord customerPointsRecord = new CustomerPointsRecord();
 
     public int sumRewardPoints(List<Transaction> transactions) {
         return countPointsFromSpentMoney(getSumOfTransactions(transactions));
