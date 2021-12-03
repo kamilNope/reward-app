@@ -37,9 +37,8 @@ class RewardController {
 
     @GetMapping ("/{customerId}")
     ResponseEntity<CustomerPointsRecord> getCustomerMonthScore(@PathVariable Long customerId){
-        List<Transaction> transactionsOfCustomer = (List<Transaction>) transactionRepository.findAllById(List.of(customerId));
-        List<Transaction> transactions = transactionService.selectTransactionsFromPreviousMonth(
-                transactionsOfCustomer);
+        List<Transaction> transactionsOfCustomer = transactionRepository.findByCustomerId(List.of(customerId));
+        List<Transaction> transactionsFromMonth = transactionService.selectTransactionsFromPreviousMonth(transactionsOfCustomer);
         if(!transactionsOfCustomer.isEmpty()){
             rewardService.sumRewardPoints(0.0);
             return new ResponseEntity<>(new CustomerPointsRecord(), HttpStatus.OK);

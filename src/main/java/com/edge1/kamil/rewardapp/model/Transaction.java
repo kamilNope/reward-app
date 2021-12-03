@@ -19,20 +19,20 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "TRANSACTION") public
-class Transaction {
+@Table(name = "TRANSACTION")
+public class Transaction {
     @Id
-    @Column(name = "ID_T")
+    @Column(name = "transactionId")
     private Long id;
 
-    @Column(name = "PRICE", nullable = false)
+    @Column(name = "price", nullable = false)
     private Double price;
 
-    @Column(name = "DATE")
+    @Column(name = "date")
     private Date date;
 
     @ManyToOne
-    @JoinColumn(name = "ID_C")
+    @JoinColumn(name = "customerId")
     private Customer customer;
 
 }
