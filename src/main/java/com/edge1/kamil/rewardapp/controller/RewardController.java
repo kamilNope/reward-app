@@ -16,7 +16,7 @@ import com.edge1.kamil.rewardapp.service.CustomerPointsRecord;
 import com.edge1.kamil.rewardapp.service.RewardService;
 import com.edge1.kamil.rewardapp.service.TransactionService;
 
-@RestController("")
+@RestController
 @RequestMapping("api/reward-program")
 class RewardController {
 
@@ -35,7 +35,7 @@ class RewardController {
         this.transactionRepository = transactionRepository;
     }
 
-    @GetMapping("/{customerId}/monthScore")
+    @GetMapping("/{customerId}/month-score")
     ResponseEntity<CustomerPointsRecord> getCustomerMonthScore(@PathVariable Long customerId) {
         List<Transaction> transactionsOfCustomer = transactionRepository.findByCustomerId(customerId);
         if (!transactionsOfCustomer.isEmpty()) {
@@ -50,7 +50,7 @@ class RewardController {
         }
     }
 
-    @GetMapping("/{customerId}/totalScore")
+    @GetMapping("/{customerId}/total-score")
     ResponseEntity<CustomerPointsRecord> getCustomerTotalScore(@PathVariable Long customerId) {
         List<Transaction> transactionsOfCustomer = transactionRepository.findByCustomerId(customerId);
         if (!transactionsOfCustomer.isEmpty()) {

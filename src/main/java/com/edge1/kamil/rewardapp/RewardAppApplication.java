@@ -29,15 +29,11 @@ public class RewardAppApplication {
             customerRepository.save(ann);
             customerRepository.save(bob);
 
-            customerRepository.save(new Customer(1L, "TED"));
-            customerRepository.save(new Customer(2L, "ANN"));
-            customerRepository.save(new Customer(1L, "BOB"));
-
             transactionRepository.save(new Transaction(100L, 49.8, new Date(2021, 12, 1), ted));
             transactionRepository.save(new Transaction(101L, 49.8, new Date(2021, 12, 1),  ted));
-            transactionRepository.save(new Transaction(101L, 49.8, new Date(2021, 12, 1), ted));
-            transactionRepository.save(new Transaction(101L, 49.8, new Date(2021, 12, 1), ann));
-            transactionRepository.save(new Transaction(101L, 90.0, new Date(2021, 12, 1), bob));
+            transactionRepository.save(new Transaction(102L, 49.8, new Date(2021, 12, 1), ted));
+            transactionRepository.save(new Transaction(103L, 49.8, new Date(2021, 12, 1), ann));
+            transactionRepository.save(new Transaction(104L, 90.0, new Date(2021, 12, 1), bob));
         };
     }
 }

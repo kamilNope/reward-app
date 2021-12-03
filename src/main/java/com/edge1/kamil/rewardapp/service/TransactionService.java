@@ -12,9 +12,9 @@ import com.edge1.kamil.rewardapp.model.Transaction;
 public class TransactionService {
 
     public List<Transaction> selectTransactionsFromPrevMonth(List<Transaction> transactions){
-        LocalDate previousMontDate = LocalDate.now().minusMonths(1L);
+        LocalDate previousMonthDate = LocalDate.now().minusMonths(1L);
         return transactions.stream()
-                .filter(transaction -> previousMontDate.isBefore(transaction.getDate().toLocalDate()))
+                .filter(transaction -> previousMonthDate.isBefore(transaction.getDate().toLocalDate()))
                 .collect(Collectors.toList());
     }
 

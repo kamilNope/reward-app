@@ -13,6 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CustomerPointsRecord {
-    String userName;
-    Integer monthUserScore;
+    String customerName;
+    Integer customerScore;
 }

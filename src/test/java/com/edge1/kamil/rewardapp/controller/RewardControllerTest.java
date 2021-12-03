@@ -2,7 +2,6 @@ package com.edge1.kamil.rewardapp.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -59,7 +58,7 @@ class RewardControllerTest {
         verify(transactionService, times(1)).selectTransactionsFromPrevMonth(tedTran);
         verify(customerRepository, times(1)).findById(1L);
         assertEquals(HttpStatus.OK, customerMonthScore.getStatusCode());
-        assertEquals(49, customerMonthScore.getBody().getMonthUserScore());
+        assertEquals(49, customerMonthScore.getBody().getCustomerScore());
     }
 
 }
