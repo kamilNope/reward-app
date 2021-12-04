@@ -9,12 +9,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.edge1.kamil.rewardapp.model.Customer;
 import com.edge1.kamil.rewardapp.model.Transaction;
 import com.edge1.kamil.rewardapp.repository.CustomerRepository;
 import com.edge1.kamil.rewardapp.repository.TransactionRepository;
-import com.edge1.kamil.rewardapp.view.CustomerPointsDTO;
 import com.edge1.kamil.rewardapp.service.RewardService;
 import com.edge1.kamil.rewardapp.service.TransactionService;
+import com.edge1.kamil.rewardapp.view.CustomerPointsDTO;
 
 @RestController
 @RequestMapping("/api/reward-program")
@@ -37,29 +38,27 @@ class RewardController {
 
     @GetMapping("/{customerId}/month-score")
     ResponseEntity<CustomerPointsDTO> getCustomerMonthScore(@PathVariable Long customerId) {
-        List<Transaction> transactionsOfCustomer = transactionRepository.findByCustomerId(customerId);
-        if (!transactionsOfCustomer.isEmpty()) {
-            List<Transaction> transactionsFromMonth = transactionService.selectTransactionsFromPrevMonth(
-                    transactionsOfCustomer);
+        List<Transaction> transactionsOfCustomer = transactionRepository.findByCustomerId(customerId)
+                .orElseThrow(() -> new CustomApiException(customerId.toString()));
+        List<Transaction> transactionsFromMonth = transactionService.selectTransactionsFromPrevMonth(
+                transactionsOfCustomer);
 
-            String customer = customerRepository.findById(customerId).get().getName();
-            final int monthUserScore = rewardService.sumRewardPoints(transactionsFromMonth);
-            return new ResponseEntity<>(new CustomerPointsDTO(customer, monthUserScore), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new CustomApiException(customerId.toString()));
+
+        final int monthUserScore = rewardService.sumRewardPoints(transactionsFromMonth);
+        return new ResponseEntity<>(new CustomerPointsDTO(customer.getName(), monthUserScore), HttpStatus.OK);
     }
 
     @GetMapping("/{customerId}/total-score")
     ResponseEntity<CustomerPointsDTO> getCustomerTotalScore(@PathVariable Long customerId) {
-        List<Transaction> transactionsOfCustomer = transactionRepository.findByCustomerId(customerId);
-        if (!transactionsOfCustomer.isEmpty()) {
-            final int totalPoints = rewardService.sumRewardPoints(transactionsOfCustomer);
-            String customer = customerRepository.findById(customerId).get().getName();
-            return new ResponseEntity<>(new CustomerPointsDTO(customer, totalPoints), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        List<Transaction> transactionsOfCustomer = transactionRepository.findByCustomerId(customerId)
+                .orElseThrow(() -> new CustomApiException(customerId.toString()));
+
+        final int totalPoints = rewardService.sumRewardPoints(transactionsOfCustomer);
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new CustomApiException(customerId.toString()));
+        return new ResponseEntity<>(new CustomerPointsDTO(customer.getName(), totalPoints), HttpStatus.OK);
     }
 
 }

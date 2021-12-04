@@ -1,7 +1,9 @@
 package com.edge1.kamil.rewardapp.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -47,18 +49,27 @@ class RewardControllerTest {
     void shouldReturnMonthReward() {
         // given
         final Customer ted = new Customer(1L, "TED");
-        final List<Transaction> tedTran = List.of(
-                new Transaction(1L, 99.0, Date.valueOf(LocalDate.now()), ted));
+        final Optional<List<Transaction>> tedTran = Optional.of(List.of(
+                new Transaction(1L, 99.0, Date.valueOf(LocalDate.now()), ted)));
         when(customerRepository.findById(1L)).thenReturn(Optional.of(ted));
         when(transactionRepository.findByCustomerId(any())).thenReturn(tedTran);
         // when
         final ResponseEntity<CustomerPointsDTO> customerMonthScore = rewardController.getCustomerMonthScore(1L);
         // then
-        verify(rewardService, times(1)).sumRewardPoints(tedTran);
-        verify(transactionService, times(1)).selectTransactionsFromPrevMonth(tedTran);
+        verify(rewardService, times(1)).sumRewardPoints(tedTran.get());
+        verify(transactionService, times(1)).selectTransactionsFromPrevMonth(tedTran.get());
         verify(customerRepository, times(1)).findById(1L);
         assertEquals(HttpStatus.OK, customerMonthScore.getStatusCode());
         assertEquals(49, customerMonthScore.getBody().getCustomerScore());
+    }
+
+    @Test
+    void shouldReturnErrorHandle() {
+        // when
+        assertThrows(CustomApiException.class, () -> rewardController.getCustomerMonthScore(13L));
+        // then
+        verify(transactionRepository, times(1)).findByCustomerId(13L);
+        verify(customerRepository, never()).findById(13L);
     }
 
 }
