@@ -2,6 +2,8 @@ package com.edge1.kamil.rewardapp.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,6 +25,7 @@ import lombok.Setter;
 public class Transaction {
     @Id
     @Column(name = "transactionId")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "price", nullable = false)
