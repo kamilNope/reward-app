@@ -5,28 +5,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.edge1.kamil.rewardapp.view.ApiErrorDTO;
 
 @RestControllerAdvice
 class ApiErrorHandler {
 
     @ExceptionHandler(CustomApiException.class)
-    public ResponseEntity<ApiErrorResponse> handleApiException(
+    public ResponseEntity<ApiErrorDTO> handleApiException(
             CustomApiException ex) {
-        ApiErrorResponse response =
-                new ApiErrorResponse("error-0001",
+        ApiErrorDTO response =
+                new ApiErrorDTO("error-0001",
                         "No element found with ID " + ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
-}
-
-@Setter
-@Getter
-@AllArgsConstructor
-class ApiErrorResponse {
-
-    private String error;
-    private String message;
 }

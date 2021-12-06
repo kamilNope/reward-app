@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +14,6 @@ import com.edge1.kamil.rewardapp.model.Customer;
 import com.edge1.kamil.rewardapp.model.Transaction;
 import com.edge1.kamil.rewardapp.repository.CustomerRepository;
 import com.edge1.kamil.rewardapp.repository.TransactionRepository;
-import com.edge1.kamil.rewardapp.service.TransactionService;
 import com.edge1.kamil.rewardapp.view.TransactionDTO;
 
 @RestController
@@ -26,15 +24,15 @@ class TransactionController {
     final CustomerRepository customerRepository;
 
     TransactionController(TransactionRepository transactionRepository,
-            CustomerRepository customerRepository,
-            TransactionService transactionService) {
+            CustomerRepository customerRepository) {
         this.transactionRepository = transactionRepository;
         this.customerRepository = customerRepository;
     }
 
-    @PostMapping(value = "/add")
+    @PostMapping(value = "/save")
     ResponseEntity<TransactionDTO> addNewTransactionOfCustomer(@RequestBody TransactionDTO transactionDTO){
-        Customer customer = customerRepository.findById(transactionDTO.getCustomerId()).get();
+        Customer customer = customerRepository.findById(transactionDTO.getCustomerId())
+                .orElseThrow(() -> new CustomApiException(transactionDTO.getCustomerId().toString()));
         Transaction transaction = new Transaction(transactionDTO.getId(), transactionDTO.getPrice(), Date.valueOf(LocalDate.now()), customer);
         transactionRepository.save(transaction);
         return new ResponseEntity<>(transactionDTO, HttpStatus.OK);

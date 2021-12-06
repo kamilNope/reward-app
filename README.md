@@ -7,7 +7,7 @@ http://localhost:8080/swagger-ui/
 2. Use postman or curl to run scenarios 
 3. to add/update transaction
 ```
-curl -X POST -H "Content-Type: application/json" -d '{"id": 10000, "price": 1000, "customerId": "1"}'  localhost:8080/api/transactions/add
+curl -X POST -H "Content-Type: application/json" -d '{"id": 10000, "price": 1000, "customerId": "1"}'  localhost:8080/api/transactions/save
 ```
 4. to get reward points for one month
 ```

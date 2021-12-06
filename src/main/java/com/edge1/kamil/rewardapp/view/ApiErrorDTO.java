@@ -4,12 +4,13 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class TransactionDTO {
-    private Long id;
-    private Double price;
-    private Long customerId;
+public class ApiErrorDTO {
+    private String error;
+    private String message;
 }
