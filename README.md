@@ -1,4 +1,4 @@
-## Api doc in swagger
+## Api doc in swagger (works after run app)
 http://localhost:8080/swagger-ui/
 
 ## Requirements to run
