@@ -1,15 +1,3 @@
 package com.edge1.kamil.rewardapp.view;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class TransactionDTO {
-    private Long id;
-    private Double price;
-    private Long customerId;
-}
+public record TransactionDTO(Long id, Double price, Long customerId){}

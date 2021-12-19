@@ -31,21 +31,21 @@ class TransactionController {
     }
 
     @PostMapping(value = "/add")
-    ResponseEntity<TransactionDTO> addNewTransactionOfCustomer(@RequestBody TransactionDTO transactionDTO){
-        Customer customer = customerRepository.findById(transactionDTO.getCustomerId())
-                .orElseThrow(() -> new CustomApiException(transactionDTO.getCustomerId().toString()));
-        Transaction transaction = new Transaction(transactionDTO.getId(), transactionDTO.getPrice(), Date.valueOf(LocalDate.now()), customer);
+    ResponseEntity<TransactionDTO> addNewTransactionOfCustomer(@RequestBody TransactionDTO transactionDTO) {
+        Customer customer = customerRepository.findById(transactionDTO.customerId())
+                .orElseThrow(() -> new CustomApiException(transactionDTO.customerId().toString()));
+        Transaction transaction = new Transaction(transactionDTO.id(), transactionDTO.price(), Date.valueOf(LocalDate.now()), customer);
         final Transaction addedTransaction = transactionRepository.save(transaction);
-        TransactionDTO resultTransaction = new TransactionDTO(addedTransaction.getId(), transactionDTO.getPrice(), transactionDTO.getCustomerId());
+        TransactionDTO resultTransaction = new TransactionDTO(addedTransaction.getId(), transactionDTO.price(), transactionDTO.customerId());
         return new ResponseEntity<>(resultTransaction, HttpStatus.CREATED);
     }
 
 
     @PutMapping(value = "/update")
-    ResponseEntity<TransactionDTO> updateTransactionOfCustomer(@RequestBody TransactionDTO transactionDTO){
-        Customer customer = customerRepository.findById(transactionDTO.getCustomerId())
-                .orElseThrow(() -> new CustomApiException(transactionDTO.getCustomerId().toString()));
-        Transaction transaction = new Transaction(transactionDTO.getId(), transactionDTO.getPrice(), Date.valueOf(LocalDate.now()), customer);
+    ResponseEntity<TransactionDTO> updateTransactionOfCustomer(@RequestBody TransactionDTO transactionDTO) {
+        Customer customer = customerRepository.findById(transactionDTO.customerId())
+                .orElseThrow(() -> new CustomApiException(transactionDTO.customerId().toString()));
+        Transaction transaction = new Transaction(transactionDTO.id(), transactionDTO.price(), Date.valueOf(LocalDate.now()), customer);
         transactionRepository.save(transaction);
         return new ResponseEntity<>(transactionDTO, HttpStatus.OK);
     }

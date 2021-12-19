@@ -49,7 +49,7 @@ class TransactionControllerTest {
         verify(customerRepository, times(1)).findById(1L);
         verify(transactionRepository, times(1)).save(any());
         assertEquals(HttpStatus.CREATED, transactionOfCustomer.getStatusCode());
-        assertEquals(transactionDTO.getPrice(), transactionOfCustomer.getBody().getPrice());
+        assertEquals(transactionDTO.price(), transactionOfCustomer.getBody().price());
     }
 
     @Test
